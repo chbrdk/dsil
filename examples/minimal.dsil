@@ -1,0 +1,326 @@
+# Minimal Design System Example
+# A simple but complete example demonstrating DSIL core features
+# Perfect for learning and testing DSIL concepts
+
+# ============================================================================
+# META: System Identity and Configuration
+# ============================================================================
+@meta {
+  name: "minimal-ds"
+  version: "1.0.0"
+  dsil-version: "1.0.0"
+  description: "Minimal design system example demonstrating DSIL core concepts"
+  
+  prefix: {
+    html: "min-"
+    react: "Min"
+  }
+  
+  imports: {
+    react: "@minimal-ds/components-react"
+  }
+  
+  config: {
+    strict: true
+    controlled: true
+    theme: "light"
+    allowCustom: false
+  }
+}
+
+# ============================================================================
+# TOKENS: Design Values (Spacing, Colors, Typography, etc.)
+# ============================================================================
+@tokens {
+  theme: {
+    values: [light, dark]
+    default: "light"
+  }
+  
+  spacing: {
+    @group static {
+      # Fixed pixel values
+      4: { value: "4px", css: "$spacing-4" }
+      8: { value: "8px", css: "$spacing-8" }
+      16: { value: "16px", css: "$spacing-16" }
+    }
+  }
+  
+  color: {
+    @group semantic {
+      success: { value: "#00AA00", css: "$color-success" }
+      error: { value: "#FF0000", css: "$color-error" }
+    }
+  }
+  
+  breakpoint: {
+    base: { value: "0px" }
+    s: { value: "768px" }
+    m: { value: "1024px" }
+  }
+  
+  motion: {
+    duration: {
+      short: { value: "150ms", css: "$duration-short" }
+      moderate: { value: "250ms", css: "$duration-moderate" }
+    }
+  }
+}
+
+# ============================================================================
+# ICONS: Available Icon Names
+# ============================================================================
+@icons {
+  @group action {
+    add, edit, delete, save
+  }
+  
+  @group status {
+    success, error, warning, info
+  }
+  
+  special: {
+    none: { @doc "No icon" }
+  }
+}
+
+# ============================================================================
+# COMPONENTS: UI Building Blocks
+# ============================================================================
+
+@component min-button {
+  @doc "A simple button component for user actions"
+  @controlled false
+  @tag-react MinButton
+  
+  variants: {
+    variant: {
+      primary: { @doc "Main action button" }
+      secondary: { @doc "Secondary action" }
+    }
+  }
+  
+  props: {
+    variant: {
+      type: "primary" | "secondary"
+      default: "primary"
+    }
+    disabled: {
+      type: boolean
+      default: false
+    }
+    loading: {
+      type: boolean
+      default: false
+      @doc "Shows loading spinner"
+    }
+  }
+  
+  slots: {
+    default: {
+      required: true
+      type: text
+      @doc "Button label"
+    }
+  }
+  
+  events: {
+    click: {
+      native: true
+    }
+  }
+  
+  constraints: {
+    @rule "loading implies disabled" {
+      error: "Button with loading=true is implicitly disabled"
+    }
+  }
+  
+  examples: {
+    basic: |
+      <MinButton>Click me</MinButton>
+      <MinButton variant="secondary">Cancel</MinButton>
+    
+    loading: |
+      <MinButton loading>Saving...</MinButton>
+  }
+}
+
+@component min-input {
+  @doc "Text input field with label and validation"
+  @controlled false
+  @tag-react MinInput
+  
+  props: {
+    label: {
+      type: string
+      required: true
+    }
+    value: {
+      type: string
+    }
+    placeholder: {
+      type: string
+    }
+    disabled: {
+      type: boolean
+      default: false
+    }
+    state: {
+      type: "none" | "success" | "error"
+      default: "none"
+    }
+    message: {
+      type: string
+      @doc "Validation message"
+    }
+  }
+  
+  events: {
+    input: {
+      native: true
+      payload: {
+        value: string
+      }
+    }
+  }
+  
+  constraints: {
+    @rule "error requires message" {
+      error: "state=error requires a message prop"
+    }
+  }
+}
+
+@component min-modal {
+  @doc "Modal dialog. Controlled component requiring state management."
+  @controlled true
+  @tag-react MinModal
+  
+  props: {
+    open: {
+      type: boolean
+      required: true
+      @doc "Controls visibility"
+    }
+    heading: {
+      type: string
+    }
+  }
+  
+  slots: {
+    default: {
+      required: true
+      type: node
+    }
+    footer: {
+      required: false
+      type: node
+    }
+  }
+  
+  events: {
+    dismiss: {
+      payload: {}
+      @doc "Fired when user wants to close"
+    }
+  }
+  
+  constraints: {
+    @rule "must handle dismiss" {
+      error: "Modal requires dismiss event handler"
+      critical: true
+    }
+  }
+  
+  examples: {
+    basic: |
+      const [open, setOpen] = useState(false);
+      
+      <MinModal 
+        open={open}
+        heading="Confirm"
+        onDismiss={() => setOpen(false)}
+      >
+        <p>Are you sure?</p>
+      </MinModal>
+  }
+}
+
+# ============================================================================
+# PATTERNS: Reusable Composition Patterns
+# ============================================================================
+@patterns {
+  @pattern form-field {
+    @doc "Standard form field layout with label, input, and message"
+    
+    structure: [label, input, message]
+    
+    components: {
+      label: "min-text"
+      input: "min-input"
+      message: "min-text"
+    }
+    
+    constraints: {
+      @rule "error needs message"
+      @rule "error state requires message prop"
+    }
+  }
+  
+  @pattern button-group {
+    @doc "Group of action buttons for forms and dialogs"
+    
+    structure: [secondary, primary]
+    
+    constraints: {
+      @rule "Primary button at end"
+      @rule "Maximum 2 buttons"
+    }
+    
+    implementation: |
+      <div className="button-group">
+        <MinButton variant="secondary">Cancel</MinButton>
+        <MinButton variant="primary">Save</MinButton>
+      </div>
+  }
+}
+
+# ============================================================================
+# SEMANTICS: Intent-to-Component Mapping
+# ============================================================================
+@semantics {
+  @intent "user clicks action" {
+    @alias "button", "cta"
+    
+    conditions: {
+      "primary action": {
+        component: "min-button[variant:primary]"
+        reason: "Main call to action"
+      }
+      "secondary action": {
+        component: "min-button[variant:secondary]"
+        reason: "Secondary or cancel action"
+      }
+    }
+  }
+  
+  @intent "user enters text" {
+    conditions: {
+      "single line": {
+        component: "min-input"
+        reason: "Text input for single-line data"
+      }
+    }
+  }
+  
+  @intent "confirm action" {
+    conditions: {
+      "requires confirmation": {
+        component: "min-modal"
+        pattern: "modal-confirmation"
+        reason: "Destructive actions need confirmation dialog"
+      }
+    }
+  }
+}
