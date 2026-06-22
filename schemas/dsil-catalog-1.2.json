@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dsil.dev/schemas/dsil-catalog-1.2.json",
+  "title": "DSIL Catalog 1.2",
+  "type": "object",
+  "required": ["meta", "components"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "dsilCoreVersion": { "type": "string", "const": "1.2.0" },
+        "dsilVersion": { "type": "string", "description": "Legacy manifest version" },
+        "profiles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "syncProfile": { "type": "string", "description": "Legacy single profile id" }
+      }
+    },
+    "components": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/componentDef"
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/binding" }
+    },
+    "instances": {
+      "type": "object",
+      "additionalProperties": { "$ref": "dsil-instance-ir-1.2.json" }
+    }
+  },
+  "$defs": {
+    "componentDef": {
+      "type": "object",
+      "required": ["slots"],
+      "properties": {
+        "slots": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "required": { "type": "boolean" },
+              "type": { "type": "string" },
+              "typography": { "type": "string" }
+            }
+          }
+        },
+        "layout": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "layoutRecipe": {
+          "type": "object",
+          "properties": {
+            "mode": { "enum": ["column", "row", "grid"] },
+            "gap": { "type": "string" },
+            "defaultSlotOrder": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "regions": { "type": "object" },
+            "slotPresentation": { "type": "object" }
+          }
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "required": ["bindingId", "instanceId"],
+      "properties": {
+        "bindingId": { "type": "string" },
+        "instanceId": { "type": "string" },
+        "source": {
+          "type": "object",
+          "required": ["tool"],
+          "properties": {
+            "tool": { "type": "string" },
+            "fileId": { "type": "string" },
+            "componentName": { "type": "string" },
+            "componentId": { "type": "string" }
+          }
+        },
+        "layerMap": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "fileId": { "type": "string", "description": "Legacy penpot field" },
+        "componentName": { "type": "string", "description": "Legacy penpot field" }
+      }
+    }
+  }
+}

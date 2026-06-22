@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "name": "penpot-webdesign-layouts",
+    "version": "1.0.0",
+    "dsilCoreVersion": "1.2.0",
+    "profiles": ["instance-sync", "penpot-sync"]
+  },
+  "components": {
+    "penpot-button": {
+      "slots": { "default": { "required": true, "type": "text" } }
+    },
+    "penpot-link": {
+      "slots": { "default": { "required": true, "type": "text" } }
+    },
+    "penpot-text": {
+      "slots": { "default": { "required": true, "type": "text" } }
+    },
+    "penpot-image": {
+      "slots": {}
+    },
+    "penpot-card": {
+      "slots": {
+        "title": { "required": true, "type": "text", "typography": "H3 Heading" },
+        "body": { "required": false, "type": "text", "typography": "Body text" },
+        "meta": { "required": false, "type": "text", "typography": "Body text" },
+        "media": { "required": false, "type": "node" },
+        "action": { "required": false, "type": "node" }
+      },
+      "layout": { "padding": "card.padding", "radius": "card.radius", "gap": "card.gap" },
+      "layoutRecipe": {
+        "mode": "column",
+        "gap": "card.gap",
+        "defaultSlotOrder": ["media", "meta", "body", "title", "action"],
+        "regions": {
+          "main": { "slots": ["media", "meta", "body", "title"] },
+          "footer": { "slots": ["action"], "justify": "end" }
+        },
+        "slotPresentation": {
+          "media": { "as": "media", "aspect": "495/173" },
+          "meta": { "as": "inline-row", "icon": "calendar" },
+          "title": { "as": "heading", "level": 3, "color": "color.icon-star" },
+          "body": { "as": "text" },
+          "action": { "as": "action" }
+        }
+      }
+    },
+    "penpot-hero": {
+      "slots": {
+        "title": { "required": true, "type": "text" },
+        "subtitle": { "required": false, "type": "text" },
+        "action": { "required": false, "type": "node" }
+      }
+    },
+    "penpot-review-card": {
+      "slots": {
+        "quote": { "required": true, "type": "text" },
+        "author": { "required": true, "type": "text" },
+        "avatar": { "required": false, "type": "node" }
+      }
+    }
+  },
+  "bindings": [
+    {
+      "bindingId": "card-alfa-default",
+      "instanceId": "card-alfa-default",
+      "source": {
+        "tool": "penpot",
+        "fileId": "cc47af74-88dd-801a-8008-3250a5bf46e1",
+        "componentName": "Card Alfa"
+      },
+      "layerMap": {
+        "Blog post title": "title",
+        "Excerpt": "body",
+        "Placeholders / Image2": "media",
+        "Meta": "meta",
+        "Date": "meta",
+        "Title": "title",
+        "Body": "body",
+        "Avatar": "media",
+        "Action": "action"
+      }
+    },
+    {
+      "bindingId": "hero-alfa-default",
+      "instanceId": "hero-alfa-default",
+      "source": {
+        "tool": "penpot",
+        "fileId": "cc47af74-88dd-801a-8008-3250a5bf46e1",
+        "componentName": "Hero Alfa"
+      },
+      "layerMap": { "Title": "title", "Subtitle": "subtitle", "CTA": "action" }
+    },
+    {
+      "bindingId": "review-card-alpha-default",
+      "instanceId": "review-card-alpha-default",
+      "source": {
+        "tool": "penpot",
+        "fileId": "cc47af74-88dd-801a-8008-3250a5bf46e1",
+        "componentName": "Review card Alpha"
+      },
+      "layerMap": { "Quote": "quote", "Author": "author", "Avatar": "avatar" }
+    }
+  ],
+  "instances": {
+    "card-alfa-default": {
+      "instanceId": "card-alfa-default",
+      "component": "penpot-card",
+      "variant": "default",
+      "tree": {
+        "title": { "type": "text", "value": "This is my Blog Post heading" },
+        "body": {
+          "type": "text",
+          "value": "This is just placeholder text. Don’t be alarmed, this is just here to fill up space since your finalized copy isn’t ready yet. "
+        },
+        "meta": { "type": "text", "value": "2023-11-14 " },
+        "media": {
+          "type": "image",
+          "src": "/placeholder-card-media.svg",
+          "alt": ""
+        }
+      },
+      "slotOrder": ["media", "meta", "body", "title"],
+      "layout": {
+        "padding": { "type": "token", "tokenRef": "card.padding" },
+        "radius": { "type": "token", "tokenRef": "card.radius" }
+      }
+    },
+    "hero-alfa-default": {
+      "instanceId": "hero-alfa-default",
+      "component": "penpot-hero",
+      "variant": "default",
+      "tree": {
+        "title": { "type": "text", "value": "Hero headline" },
+        "subtitle": { "type": "text", "value": "Hero supporting text from Penpot." },
+        "action": {
+          "type": "ref",
+          "ref": "penpot-button",
+          "props": { "variant": "primary" },
+          "slots": { "default": { "type": "text", "value": "Get started" } }
+        }
+      }
+    },
+    "review-card-alpha-default": {
+      "instanceId": "review-card-alpha-default",
+      "component": "penpot-review-card",
+      "variant": "default",
+      "tree": {
+        "quote": { "type": "text", "value": "Great product experience." },
+        "author": { "type": "text", "value": "Alex Reviewer" },
+        "avatar": { "type": "image", "src": "/placeholder-avatar.svg", "alt": "Reviewer" }
+      }
+    }
+  }
+}

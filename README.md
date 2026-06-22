@@ -34,21 +34,38 @@ DSIL provides:
 
 ---
 
+## DSIL v1.2 — Core + Profiles
+
+DSIL 1.2 separates **tool-agnostic core** from **profiles** (sync/codegen):
+
+| Document | Purpose |
+|----------|---------|
+| [DSIL-SPEC-v1.2.md](specs/DSIL-SPEC-v1.2.md) | Catalog, instance IR, `layoutRecipe`, validation |
+| [profiles/penpot-sync.md](specs/profiles/penpot-sync.md) | Design-tool → instance sync (example: Penpot) |
+| [profiles/codegen.md](specs/profiles/codegen.md) | LLM codegen constraints (example: Porsche) |
+| [schemas/dsil-catalog-1.2.json](schemas/dsil-catalog-1.2.json) | JSON Schema for catalogs |
+| [schemas/dsil-instance-ir-1.2.json](schemas/dsil-instance-ir-1.2.json) | JSON Schema for instances |
+
+**Examples are not the architecture** — `porsche-ds`, `material-design`, and `penpot-webdesign-layouts` illustrate profiles only.
+
+---
+
 ## Project Structure
 
 ```
 dsil-repo/
-├── README.md                    # This file
-├── LICENSE                      # MIT License
+├── README.md
 ├── specs/
-│   └── DSIL-SPEC-v1.0.md       # Technical Specification
+│   ├── DSIL-SPEC-v1.0.md … v1.2.md
+│   └── profiles/           # penpot-sync, codegen, …
+├── schemas/                # JSON schemas (v1.2)
 ├── docs/
-│   ├── DSIL-GUIDE.md           # Practical Guide
-│   └── DSIL-REFERENCE.md       # Complete Reference
 └── examples/
-    ├── minimal.dsil            # Minimal example (3 components)
-    ├── porsche-ds.dsil.md      # Enterprise example (40+ components)
-    └── starter-template.md     # Blank template
+    ├── minimal.dsil
+    ├── porsche-ds.dsil.md      # codegen profile example
+    ├── material-design.dsil.md
+    ├── penpot-webdesign-layouts/  # instance-sync profile example
+    └── starter-template.md
 ```
 
 ---

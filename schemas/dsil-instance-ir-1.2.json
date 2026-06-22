@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dsil.dev/schemas/dsil-instance-ir-1.2.json",
+  "title": "DSIL Instance IR 1.2",
+  "type": "object",
+  "required": ["instanceId", "component", "tree"],
+  "properties": {
+    "instanceId": { "type": "string" },
+    "component": { "type": "string" },
+    "variant": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object", "additionalProperties": { "type": "string" } }
+      ]
+    },
+    "slotOrder": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "tree": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/slotNode" }
+    },
+    "layout": { "type": "object" },
+    "toolMeta": { "type": "object" },
+    "penpotBinding": {
+      "type": "object",
+      "description": "Deprecated — use toolMeta.penpot",
+      "properties": {
+        "penpotName": { "type": "string" },
+        "penpotId": { "type": "string" },
+        "fileId": { "type": "string" }
+      }
+    },
+    "contentHash": { "type": "string" },
+    "syncStatus": {
+      "enum": ["synced", "scaffold", "drift", "pilot"]
+    },
+    "unmappedLayers": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "slotNode": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["type", "value"],
+          "properties": {
+            "type": { "const": "text" },
+            "value": { "type": "string" },
+            "typography": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type"],
+          "properties": {
+            "type": { "const": "image" },
+            "src": { "type": "string" },
+            "alt": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "ref"],
+          "properties": {
+            "type": { "const": "ref" },
+            "ref": { "type": "string" },
+            "props": { "type": "object" },
+            "slots": {
+              "type": "object",
+              "additionalProperties": { "$ref": "#/$defs/slotNode" }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["type", "tokenRef"],
+          "properties": {
+            "type": { "const": "token" },
+            "tokenRef": { "type": "string" }
+          }
+        }
+      ]
+    }
+  }
+}

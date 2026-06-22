@@ -1,0 +1,45 @@
+{
+  "bindingsVersion": "1.2.0",
+  "bindings": [
+    {
+      "bindingId": "card-alfa-default",
+      "instanceId": "card-alfa-default",
+      "source": {
+        "tool": "penpot",
+        "fileId": "cc47af74-88dd-801a-8008-3250a5bf46e1",
+        "componentName": "Card Alfa"
+      },
+      "layerMap": {
+        "Blog post title": "title",
+        "Excerpt": "body",
+        "Placeholders / Image2": "media",
+        "Meta": "meta",
+        "Date": "meta",
+        "Title": "title",
+        "Body": "body",
+        "Avatar": "media",
+        "Action": "action"
+      }
+    },
+    {
+      "bindingId": "hero-alfa-default",
+      "instanceId": "hero-alfa-default",
+      "source": {
+        "tool": "penpot",
+        "fileId": "cc47af74-88dd-801a-8008-3250a5bf46e1",
+        "componentName": "Hero Alfa"
+      },
+      "layerMap": { "Title": "title", "Subtitle": "subtitle", "CTA": "action" }
+    },
+    {
+      "bindingId": "review-card-alpha-default",
+      "instanceId": "review-card-alpha-default",
+      "source": {
+        "tool": "penpot",
+        "fileId": "cc47af74-88dd-801a-8008-3250a5bf46e1",
+        "componentName": "Review card Alpha"
+      },
+      "layerMap": { "Quote": "quote", "Author": "author", "Avatar": "avatar" }
+    }
+  ]
+}
